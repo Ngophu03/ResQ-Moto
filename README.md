@@ -1,49 +1,56 @@
-# ResQ Moto – GitHub Ready Demo
+# ResQ Moto – Leaflet Roadside Assistance Demo
 
-Bản này được sắp xếp **phẳng ở thư mục chính** để bạn dễ upload lên GitHub hoặc GitHub Pages.
+A polished front-end demo for roadside assistance and mobile mechanic booking in Ho Chi Minh City.
 
-## File trong thư mục gốc
-- `index.html`
-- `admin.html`
-- `style.css`
-- `responsive.css`
-- `data.js`
-- `app.js`
-- `admin.js`
-- `README.md`
+## Features
+- 6-step booking flow
+- Modern UI with responsive layout for desktop, tablet and mobile
+- Leaflet + OpenStreetMap map
+- All drivers visible on the map
+- Click driver markers to:
+  - choose driver immediately
+  - preview the route
+- Customer location by:
+  - current GPS
+  - address search
+  - dragging the customer pin
+- OSRM route preview from driver to customer
+- Payment step:
+  - cash
+  - bank transfer
+- Fuel delivery option:
+  - E5
+  - RON95
+  - Diesel
+  - liters input
+- Bilingual UI:
+  - Vietnamese
+  - English
+- Tracking step with trip timeline
+- Quick actions:
+  - call driver
+  - quick chat mock
+- Reference price drawer
+- Admin demo page:
+  - `pages/admin.html`
 
-## Tính năng
-- Flow 6 bước
-- Leaflet + OpenStreetMap
-- Tất cả tài xế hiện trên map
-- Click marker để xem tuyến / chọn tài xế
-- Random vị trí tài xế mỗi lần reload
-- Thanh toán tiền mặt / chuyển khoản
-- Mua xăng hộ E5 / RON95 / Diesel
-- Song ngữ Việt / Anh
-- Route thật bằng OSRM
-- Admin demo đọc booking gần nhất từ localStorage
+## Run
+Use a local server for best results.
 
-## Chạy local
-### Cách 1: VS Code Live Server
-Mở thư mục rồi chạy `Open with Live Server`.
+### Option 1: VS Code Live Server
+Open the folder in VS Code and run Live Server on `index.html`.
 
-### Cách 2: Python
+### Option 2: Python
 ```bash
 python3 -m http.server 8000
 ```
-Sau đó mở `http://localhost:8000`
 
-## Upload GitHub Pages
-1. Tạo repo mới trên GitHub.
-2. Upload toàn bộ file trong thư mục này lên **root** của repo.
-3. Vào **Settings → Pages**.
-4. Chọn branch `main` và folder `/root`.
-5. Save.
+Then open:
+```text
+http://localhost:8000
+```
 
-## Lưu ý
-- App cần internet để tải map tiles, geocoding và route.
-- OTP demo: `123456`
-
-
-Balanced v2: smaller, more proportional layout tuned for GitHub Pages.
+## Notes
+- Internet is required for map tiles, route calculation and geocoding.
+- OTP demo code is `123456`.
+- Booking records are stored in browser `localStorage` for demo purposes.
