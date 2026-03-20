@@ -1,0 +1,81 @@
+@media (max-width: 1280px) {
+  .main-grid { grid-template-columns: 1fr; }
+  .map-panel { min-height: auto; order: -1; }
+  #map { min-height: 520px; }
+  .hero-title { max-width: none; }
+  .map-topbar h2 { max-width: none; }
+}
+
+@media (max-width: 980px) {
+  .page-shell { width: min(calc(100% - 18px), 100%); margin-top: 12px; }
+  .topbar,
+  .left-panel,
+  .map-panel { border-radius: 22px; }
+  .topbar { flex-direction: column; align-items: stretch; }
+  .topbar-actions { justify-content: space-between; }
+  .step-chip-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .grid-2,
+  .fuel-grid,
+  .tracking-grid,
+  .payment-choice-grid,
+  .price-table-grid { grid-template-columns: 1fr; }
+  .stretch,
+  .stat-box.full { grid-column: auto; }
+  .action-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .action-grid > :last-child { grid-column: 1 / -1; }
+  .driver-card h3 { max-width: none; }
+}
+
+@media (max-width: 720px) {
+  .brand-title { font-size: 1.72rem; }
+  .brand-sub { font-size: 0.86rem; }
+  .topbar-actions { gap: 8px; }
+  .ghost-btn, .lang-btn, .secondary-btn, .icon-btn { padding: 11px 13px; }
+  .hero-row { flex-direction: column; align-items: stretch; }
+  .step-counter { align-self: flex-start; }
+  .hero-title { font-size: 1.42rem; }
+  .section-head h2 { font-size: 1.28rem; }
+  .map-topbar h2 { font-size: 1.48rem; }
+  .step-chip-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+  .wizard-body { min-height: auto; }
+  .wizard-footer { flex-direction: column; }
+  .row-inline { flex-wrap: wrap; }
+  .driver-top,
+  .price-line,
+  .price-total,
+  .summary-row,
+  .row-between { gap: 10px; }
+  .price-line,
+  .price-total,
+  .summary-row { flex-direction: column; }
+  .price-line strong,
+  .price-total strong,
+  .summary-row strong { text-align: left; }
+  .action-grid { grid-template-columns: 1fr; }
+  .map-legend { font-size: 0.84rem; }
+  #map { min-height: 400px; }
+}
+
+@media (max-width: 560px) {
+  .page-shell { width: min(calc(100% - 12px), 100%); }
+  .topbar, .left-panel, .map-panel { padding: 12px; border-radius: 20px; }
+  .brand-wrap { align-items: flex-start; }
+  .brand-badge { width: 44px; height: 44px; font-size: 1.25rem; }
+  .step-chip { min-height: 50px; padding: 8px 10px; }
+  .step-chip-label { font-size: 0.82rem; line-height: 1.18; }
+  .field span, .muted-label { font-size: 0.82rem; }
+  input, select, textarea { padding: 12px; min-height: 48px; border-radius: 14px; }
+  .primary-wide-btn, .ghost-wide-btn { min-height: 50px; font-size: 0.92rem; }
+  .modal-card { width: calc(100% - 12px); padding: 14px; border-radius: 22px; }
+  .driver-list { max-height: 360px; }
+  .mini-info { min-height: 88px; }
+  .status-pill { min-height: 44px; padding: 0 14px; }
+}
+
+@media (max-width: 980px) { .mini-stats-stack { grid-template-columns: 1fr; } .mini-stats-stack .mini-info:last-child { grid-column: auto; } }
+
+@media (max-width: 420px) {
+  .step-chip-row { grid-template-columns: 1fr 1fr; }
+  .step-chip-index { width: 28px; height: 28px; font-size: 0.84rem; }
+  .step-chip-label { font-size: 0.8rem; }
+}

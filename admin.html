@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResQ Moto Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar card">
+      <div class="brand-wrap">
+        <div class="brand-badge">R</div>
+        <div>
+          <div class="eyebrow">DEMO ADMIN</div>
+          <div class="brand-title">ResQ Moto Ops</div>
+          <p class="brand-sub">Dashboard mô phỏng từ booking gần nhất trên localStorage.</p>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <a class="ghost-btn" href="index.html">Quay lại app</a>
+      </div>
+    </header>
+
+    <main class="main-grid">
+      <section class="left-panel card">
+        <div class="section-head">
+          <h2>Booking gần nhất</h2>
+          <p>Dữ liệu đọc từ localStorage sau khi bạn hoàn tất bước theo dõi trong app chính.</p>
+        </div>
+        <div class="pricing-card" id="adminBookingCard"></div>
+      </section>
+
+      <aside class="map-panel card">
+        <div class="section-head">
+          <h2>Chỉ số vận hành</h2>
+          <p>Khối số liệu mô phỏng để bạn đưa lên GitHub như một trang phụ.</p>
+        </div>
+        <div class="grid-2">
+          <div class="mini-info"><span>Tỉ lệ OTP</span><strong>100%</strong></div>
+          <div class="mini-info"><span>Booking hôm nay</span><strong id="adminBookingCount">1</strong></div>
+          <div class="mini-info"><span>Risk score</span><strong>Thấp</strong></div>
+          <div class="mini-info"><span>Trạng thái demo</span><strong>Online</strong></div>
+        </div>
+      </aside>
+    </main>
+  </div>
+  <script src="admin.js"></script>
+</body>
+</html>

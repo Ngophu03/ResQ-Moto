@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResQ Moto</title>
+  <meta name="description" content="ResQ Moto - roadside assistance and repair booking demo for Ho Chi Minh City.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+  <div class="bg-orb bg-orb-one"></div>
+  <div class="bg-orb bg-orb-two"></div>
+  <div class="page-shell">
+    <header class="topbar card">
+      <div class="brand-wrap">
+        <div class="brand-badge">R</div>
+        <div>
+          <div class="eyebrow">HO CHI MINH CITY</div>
+          <div class="brand-title">ResQ Moto</div>
+          <p class="brand-sub" data-i18n="brandSub">Roadside assistance & repair tại TP.HCM</p>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="ghost-btn" id="openPricingBtn" data-i18n="priceBtn">Bảng giá</button>
+        <a class="ghost-btn" href="admin.html" data-i18n="adminBtn">Admin</a>
+        <div class="lang-switch" role="group" aria-label="Language switcher">
+          <button class="lang-btn active" data-lang="vi">VI</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-grid">
+      <section class="left-panel card">
+        <div class="hero-row">
+          <div>
+            <div class="eyebrow" data-i18n="heroEyebrow">Đặt cứu hộ nhanh</div>
+            <h1 class="hero-title" data-i18n="heroTitle">Từng bước rõ ràng, dễ thao tác</h1>
+            <p class="hero-desc" data-i18n="heroDesc">Xác thực khách, chọn dịch vụ, chọn vị trí, chọn tài xế, thanh toán và theo dõi trên bản đồ theo từng bước.</p>
+          </div>
+          <div class="step-counter" id="stepCounter">1 / 6</div>
+        </div>
+
+        <div class="step-chip-row" id="stepChips"></div>
+
+        <div class="wizard-body">
+          <section class="step-panel active" data-step="1">
+            <div class="section-head">
+              <h2>Xác thực khách hàng</h2>
+              <p>Nhập thông tin cơ bản trước khi gửi yêu cầu tới tài xế.</p>
+            </div>
+            <div class="grid-2">
+              <label class="field">
+                <span>Họ và tên</span>
+                <input id="customerName" type="text" placeholder="Ví dụ: Nguyễn Văn A">
+              </label>
+              <label class="field">
+                <span>Số điện thoại</span>
+                <input id="customerPhone" type="tel" placeholder="09xxxxxxxx">
+              </label>
+              <label class="field">
+                <span>Mã OTP</span>
+                <input id="otpInput" type="text" maxlength="6" placeholder="123456">
+              </label>
+              <div class="field otp-actions">
+                <span>Xác minh</span>
+                <div class="row-inline full-height">
+                  <button class="secondary-btn" id="sendOtpBtn" type="button">Gửi OTP</button>
+                  <button class="primary-btn" id="verifyOtpBtn" type="button">Xác minh</button>
+                </div>
+              </div>
+            </div>
+            <div class="inline-notice success hidden" id="otpSuccess">OTP hợp lệ. Bạn có thể sang bước tiếp theo.</div>
+            <div class="inline-notice" id="otpHint">OTP demo: <strong>123456</strong></div>
+          </section>
+
+          <section class="step-panel" data-step="2">
+            <div class="section-head">
+              <h2>Dịch vụ & tình trạng xe</h2>
+              <p>Chọn loại xe, loại dịch vụ và yêu cầu thêm để hệ thống tính giá tạm tính.</p>
+            </div>
+            <div class="grid-2">
+              <label class="field">
+                <span>Loại xe</span>
+                <select id="vehicleType"></select>
+              </label>
+              <label class="field">
+                <span>Dịch vụ chính</span>
+                <select id="serviceType"></select>
+              </label>
+              <label class="field">
+                <span>Biển số xe</span>
+                <input id="licensePlate" type="text" placeholder="59X1-123.45">
+              </label>
+              <label class="field">
+                <span>Mức độ ưu tiên</span>
+                <select id="priorityLevel">
+                  <option value="normal">Bình thường</option>
+                  <option value="urgent">Gấp</option>
+                  <option value="sos">SOS</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="chip-toggle-row" id="conditionFlags">
+              <button class="toggle-chip" data-flag="night">Ban đêm</button>
+              <button class="toggle-chip" data-flag="rain">Mưa</button>
+              <button class="toggle-chip" data-flag="peak">Giờ cao điểm</button>
+              <button class="toggle-chip" data-flag="parkingHard">Khó tiếp cận xe</button>
+            </div>
+
+            <div class="sub-card">
+              <div class="row-between compact-gap wrap">
+                <div>
+                  <h3>Dịch vụ mua xăng hộ</h3>
+                  <p>Chỉ bật nếu bạn cần mang xăng hoặc dầu đến tận nơi.</p>
+                </div>
+                <label class="switcher">
+                  <input type="checkbox" id="fuelDeliveryToggle">
+                  <span></span>
+                </label>
+              </div>
+              <div class="fuel-grid hidden" id="fuelFields">
+                <label class="field">
+                  <span>Loại nhiên liệu</span>
+                  <select id="fuelType"></select>
+                </label>
+                <label class="field">
+                  <span>Số lượng (lít)</span>
+                  <input id="fuelLiters" type="number" min="1" max="10" step="0.5" value="1">
+                </label>
+              </div>
+            </div>
+
+            <label class="field">
+              <span>Ghi chú thêm</span>
+              <textarea id="serviceNote" rows="3" placeholder="Mô tả thêm về tình trạng xe, vị trí đỗ xe, cổng vào..."></textarea>
+            </label>
+          </section>
+
+          <section class="step-panel" data-step="3">
+            <div class="section-head">
+              <h2>Chọn vị trí khách hàng</h2>
+              <p>Dùng vị trí hiện tại hoặc kéo pin trên map để chỉnh chính xác hơn.</p>
+            </div>
+            <div class="grid-2 location-grid">
+              <label class="field stretch">
+                <span>Địa chỉ</span>
+                <input id="addressInput" type="text" placeholder="Ví dụ: 25 Nguyễn Huệ, Quận 1">
+              </label>
+              <div class="field action-stack">
+                <span>Tác vụ nhanh</span>
+                <div class="row-inline wrap">
+                  <button class="secondary-btn" id="useCurrentLocationBtn" type="button">Lấy vị trí hiện tại</button>
+                  <button class="secondary-btn" id="searchAddressBtn" type="button">Tìm địa chỉ</button>
+                </div>
+              </div>
+              <label class="field">
+                <span>Vĩ độ</span>
+                <input id="latInput" type="number" step="0.000001">
+              </label>
+              <label class="field">
+                <span>Kinh độ</span>
+                <input id="lngInput" type="number" step="0.000001">
+              </label>
+            </div>
+            <div class="inline-notice" id="locationStatus">Kéo pin màu xanh trên map để tinh chỉnh vị trí. Tất cả tài xế luôn hiển thị trên bản đồ.</div>
+          </section>
+
+          <section class="step-panel" data-step="4">
+            <div class="section-head">
+              <h2>Chọn tài xế</h2>
+              <p>Bấm trực tiếp vào marker trên map hoặc chọn từ danh sách bên dưới.</p>
+            </div>
+            <div class="row-between compact-gap wrap">
+              <div class="inline-notice">Mỗi lần tải lại trang, vị trí tài xế sẽ được random mới theo từng khu vực.</div>
+              <button class="secondary-btn" id="refreshDriversBtn" type="button">Đổi gợi ý tài xế</button>
+            </div>
+            <div class="driver-list" id="driverList"></div>
+          </section>
+
+          <section class="step-panel" data-step="5">
+            <div class="section-head">
+              <h2>Thanh toán</h2>
+              <p>Xác nhận phương thức thanh toán trước khi gửi yêu cầu tới tài xế.</p>
+            </div>
+            <div class="payment-choice-grid">
+              <button class="payment-card active" data-payment="cash" type="button">
+                <span class="payment-icon">💵</span>
+                <strong>Tiền mặt</strong>
+                <small>Thanh toán khi hoàn thành</small>
+              </button>
+              <button class="payment-card" data-payment="transfer" type="button">
+                <span class="payment-icon">🏦</span>
+                <strong>Chuyển khoản</strong>
+                <small>Xem thông tin ngân hàng mẫu</small>
+              </button>
+            </div>
+            <div class="transfer-box hidden" id="transferBox">
+              <h3>Thông tin chuyển khoản</h3>
+              <div class="grid-2">
+                <div class="mini-info"><span>Ngân hàng</span><strong id="bankName"></strong></div>
+                <div class="mini-info"><span>Số tài khoản</span><strong id="bankAccount"></strong></div>
+                <div class="mini-info"><span>Chủ tài khoản</span><strong id="bankOwner"></strong></div>
+                <div class="mini-info"><span>Nội dung</span><strong id="bankNote"></strong></div>
+              </div>
+            </div>
+            <div class="pricing-card">
+              <div class="row-between"><h3>Tạm tính chi phí</h3><strong id="estimatedTotal">0đ</strong></div>
+              <div class="price-line"><span>Phí dịch vụ cơ bản</span><strong id="lineBasePrice">0đ</strong></div>
+              <div class="price-line"><span>Điều chỉnh theo tình trạng xe</span><strong id="lineConditionFee">0đ</strong></div>
+              <div class="price-line"><span>Phụ phí ưu tiên</span><strong id="linePriorityFee">0đ</strong></div>
+              <div class="price-line"><span>Phụ phí ban đêm / mưa / cao điểm</span><strong id="lineTimeFee">0đ</strong></div>
+              <div class="price-line"><span>Phí di chuyển</span><strong id="lineDistanceFee">0đ</strong></div>
+              <div class="price-line"><span>Mua xăng hộ</span><strong id="lineFuelFee">0đ</strong></div>
+              <div class="price-total"><span>Tổng tạm tính</span><strong id="lineFinalPrice">0đ</strong></div>
+            </div>
+            <div class="inline-notice warning" data-i18n="noticePrice">Phí dịch vụ có thể tăng hoặc giảm tùy tình trạng xe thực tế, vị trí đỗ xe, thời tiết và giao thông.</div>
+          </section>
+
+          <section class="step-panel" data-step="6">
+            <div class="section-head">
+              <h2>Theo dõi chuyến đi</h2>
+              <p>Theo dõi tài xế, trạng thái hiện tại và các bước tiếp theo trên đường đến bạn.</p>
+            </div>
+            <div class="tracking-grid">
+              <article class="tracking-card driver-card">
+                <div class="row-between align-start compact-gap">
+                  <div>
+                    <span class="muted-label">Tài xế được gán</span>
+                    <h3 id="trackingDriverName">--</h3>
+                  </div>
+                  <span class="status-pill" id="jobStatusPill">Chờ xác nhận</span>
+                </div>
+                <div class="mini-stats-stack">
+                  <div class="mini-info"><span>⭐ Rating</span><strong id="trackingDriverRating">--</strong></div>
+                  <div class="mini-info"><span>SĐT</span><strong id="trackingDriverPhone">--</strong></div>
+                  <div class="mini-info"><span>Thanh toán</span><strong id="trackingPaymentType">--</strong></div>
+                </div>
+                <div class="action-grid">
+                  <a class="secondary-btn action-btn" id="callDriverBtn" href="#">Gọi tài xế</a>
+                  <button class="secondary-btn action-btn" id="chatDriverBtn" type="button">Chat nhanh</button>
+                  <button class="secondary-btn action-btn" id="recalcRouteBtn" type="button">Tính lại tuyến</button>
+                </div>
+              </article>
+
+              <article class="tracking-card tracking-status-card">
+                <div class="tracking-stats-grid">
+                  <div class="mini-info stat-box"><span>ETA</span><strong id="trackingEta">--</strong></div>
+                  <div class="mini-info stat-box"><span>Khoảng cách</span><strong id="trackingDistance">--</strong></div>
+                  <div class="mini-info stat-box full"><span>Bước hiện tại</span><strong id="trackingCurrentStep">--</strong></div>
+                </div>
+                <div class="timeline" id="trackingTimeline"></div>
+              </article>
+            </div>
+
+            <article class="tracking-card booking-summary-card">
+              <div class="row-between"><h3 data-i18n="bookingSummary">Tóm tắt booking</h3><span class="small-badge" id="summaryCode">#RESQ</span></div>
+              <div class="summary-list" id="bookingSummaryList"></div>
+            </article>
+          </section>
+        </div>
+
+        <div class="wizard-footer">
+          <button class="ghost-wide-btn" id="prevBtn" type="button">Quay lại</button>
+          <button class="primary-wide-btn" id="nextBtn" type="button">Tiếp tục</button>
+        </div>
+      </section>
+
+      <aside class="map-panel card">
+        <div class="map-topbar">
+          <div>
+            <div class="eyebrow" data-i18n="mapTitle">Bản đồ trực quan</div>
+            <h2>Tất cả tài xế hiển thị trên map</h2>
+            <p data-i18n="mapDesc">Hiển thị tất cả tài xế trên map. Bấm trực tiếp vào marker để chọn hoặc xem tuyến đường.</p>
+          </div>
+          <div class="map-badge" data-i18n="coverage">Khu vực hoạt động TP.HCM · 24/7</div>
+        </div>
+        <div id="map"></div>
+        <div class="map-legend">
+          <span><i class="dot dot-customer"></i> Khách hàng</span>
+          <span><i class="dot dot-driver"></i> Tài xế</span>
+          <span><i class="dot dot-selected"></i> Tài xế đã chọn</span>
+          <span><i class="dot dot-route"></i> Tuyến đường</span>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <div class="modal hidden" id="pricingModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-card">
+      <div class="row-between">
+        <h2>Bảng giá cơ bản</h2>
+        <button class="icon-btn" data-close-modal type="button">✕</button>
+      </div>
+      <div class="price-table-grid" id="priceTableGrid"></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
